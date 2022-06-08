@@ -1,0 +1,166 @@
+-- BP 7.1.6 content: Package syschar: 3 persistence-version: 7.1.6
+
+INSERT INTO EP_PKG
+	VALUES ("b81b5758-01bc-4da6-ba5b-b06e676f1943",
+	"00000000-0000-0000-0000-000000000000",
+	"9e53c54c-f274-414b-a905-dc38e3bb5a45",
+	'Test',
+	'',
+	0);
+INSERT INTO GD_MD
+	VALUES ("c3a8f1c5-2a49-4c24-853d-d1ceed3755f2",
+	112,
+	"b81b5758-01bc-4da6-ba5b-b06e676f1943",
+	108,
+	0,
+	0,
+	1,
+	1,
+	1,
+	12,
+	1,
+	0,
+	0,
+	0,
+	0,
+	0,
+	'',
+	'Modeling Pattern::component::ModelingPattern::Test');
+INSERT INTO DIM_DIA
+	VALUES ("c3a8f1c5-2a49-4c24-853d-d1ceed3755f2",
+	'',
+	1.000000,
+	0.000000,
+	0.000000,
+	"00000000-0000-0000-0000-000000000000");
+INSERT INTO S_SYNC
+	VALUES ("f63a6da8-6e1c-4d97-a240-32bce1799743",
+	"00000000-0000-0000-0000-000000000000",
+	'Sequence_AddItem',
+	'',
+	'select any owner from instances of O;
+::AddItem(o_id:owner.O_ID, order:5);
+::AddItem( o_id:owner.O_ID, order:15 );
+::AddItem( o_id:owner.O_ID, order:70 );
+',
+	"ba5eda7a-def5-0000-0000-000000000000",
+	1,
+	'',
+	0,
+	2);
+INSERT INTO S_SPARM
+	VALUES ("1ce2470a-aee6-4d64-9d4b-634fcbbf444c",
+	"f63a6da8-6e1c-4d97-a240-32bce1799743",
+	'order',
+	"ba5eda7a-def5-0000-0000-000000000002",
+	0,
+	'',
+	"00000000-0000-0000-0000-000000000000",
+	'');
+INSERT INTO S_SPARM
+	VALUES ("c1d15108-daab-4a45-b597-c6e263c4cbac",
+	"f63a6da8-6e1c-4d97-a240-32bce1799743",
+	'o_id',
+	"ba5eda7a-def5-0000-0000-000000000005",
+	0,
+	'',
+	"1ce2470a-aee6-4d64-9d4b-634fcbbf444c",
+	'');
+INSERT INTO PE_PE
+	VALUES ("f63a6da8-6e1c-4d97-a240-32bce1799743",
+	1,
+	"b81b5758-01bc-4da6-ba5b-b06e676f1943",
+	"00000000-0000-0000-0000-000000000000",
+	1);
+INSERT INTO S_SYNC
+	VALUES ("a15a16cc-1427-484b-8db8-bbdb64b413b8",
+	"00000000-0000-0000-0000-000000000000",
+	'Sequence_DeleteItem',
+	'',
+	'select any owner from instances of O;
+if not_empty owner
+	// delete middle item
+	select one currentItem related by owner->I[R3.''first item''];
+	assign index = 0;
+	while true
+		select one nextItem related by currentItem->I[R2.''predecessor''];
+		if not_empty nextItem and index == 1
+			::DeleteItem( o_id:owner.O_ID, order:nextItem.Order );
+			break;
+		end if;
+		if empty nextItem
+			break;
+		end if;
+		index = index + 1;
+		assign currentItem = nextItem;
+	end while;
+
+		// delete first item
+	assign index = 0;
+	select one currentItem related by owner->I[R3.''first item''];
+	::DeleteItem( o_id:owner.O_ID, order:currentItem.Order );
+	
+	// delete last item
+	select one currentItem related by owner->I[R3.''first item''];
+	while true
+		select one nextItem related by currentItem->I[R2.''predecessor''];
+		if empty nextItem
+			::DeleteItem( o_id:owner.O_ID, order:currentItem.Order );
+			break;
+		end if;
+		assign currentItem = nextItem;
+	end while;
+
+end if;',
+	"ba5eda7a-def5-0000-0000-000000000000",
+	1,
+	'',
+	0,
+	3);
+INSERT INTO S_SPARM
+	VALUES ("35c09ca4-4168-45a8-a2b7-8e557d6448ff",
+	"a15a16cc-1427-484b-8db8-bbdb64b413b8",
+	'o_id',
+	"ba5eda7a-def5-0000-0000-000000000005",
+	0,
+	'',
+	"00000000-0000-0000-0000-000000000000",
+	'');
+INSERT INTO S_SPARM
+	VALUES ("fcffb0ab-c85b-48f8-910e-6ec67958c1e3",
+	"a15a16cc-1427-484b-8db8-bbdb64b413b8",
+	'order',
+	"ba5eda7a-def5-0000-0000-000000000002",
+	0,
+	'',
+	"35c09ca4-4168-45a8-a2b7-8e557d6448ff",
+	'');
+INSERT INTO PE_PE
+	VALUES ("a15a16cc-1427-484b-8db8-bbdb64b413b8",
+	1,
+	"b81b5758-01bc-4da6-ba5b-b06e676f1943",
+	"00000000-0000-0000-0000-000000000000",
+	1);
+INSERT INTO PE_PE
+	VALUES ("b81b5758-01bc-4da6-ba5b-b06e676f1943",
+	1,
+	"00000000-0000-0000-0000-000000000000",
+	"ac2c983e-0c05-4b05-bfa0-14d0f79fb652",
+	7);
+INSERT INTO C_C_PROXY
+	VALUES ("ac2c983e-0c05-4b05-bfa0-14d0f79fb652",
+	"00000000-0000-0000-0000-000000000000",
+	"00000000-0000-0000-0000-000000000000",
+	'ModelingPattern',
+	'',
+	0,
+	"00000000-0000-0000-0000-000000000000",
+	0,
+	'',
+	'',
+	'../ModelingPattern.xtuml');
+INSERT INTO S_SYS_PROXY
+	VALUES ("9e53c54c-f274-414b-a905-dc38e3bb5a45",
+	'Modeling Pattern',
+	1,
+	'../../../Modeling Pattern.xtuml');
